@@ -5,10 +5,10 @@ create table ENROLL( regno varchar(20), course int, sem int, book_isbn int, fore
 create table BOOK_ADOPTION( course int, sem int, book_isbn int, foreign key(course) references COURSE, foreign key (book_isbn) references TEXT );
 
 insert into STUDENT values('001','RIYA','ECONOMICS','09-FEB-2001');
-insert into STUDENT values('21334','JAY','LITERATURE','11-JAN-2002');
-insert into STUDENT values('21889','CALVIN','PHYSICS','18-DEC-2000');
-insert into STUDENT values('22667','PRIYA','MEDICINE','30-SEP-2004');
-insert into STUDENT values('23095','ANU','COMPUTER SCIENCE','17-NOV-2005');
+insert into STUDENT values('002','JAY','LITERATURE','11-JAN-2002');
+insert into STUDENT values('003','CALVIN','PHYSICS','18-DEC-2000');
+insert into STUDENT values('004','PRIYA','MEDICINE','30-SEP-2004');
+insert into STUDENT values('005','ANU','COMPUTER SCIENCE','17-NOV-2005');
 
 
 insert into COURSE values(201,'MACROECONOMIES','COMMERCE');
