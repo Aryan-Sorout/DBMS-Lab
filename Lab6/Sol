@@ -1,0 +1,158 @@
+Logo
+Explore
+Help
+Sign In
+aadit
+/
+MIT-Curricular
+Code
+Issues
+Pull Requests
+Actions
+Packages
+Projects
+Releases
+Wiki
+Activity
+MIT-Curricular
+/
+DBMS
+/
+SQL
+/
+Week6
+/
+writeup.md
+
+Aadit Agrawal
+Aadit Agrawal
+8177218e4e
+Update DBMS/SQL/Week6/writeup.md
+1 minute ago
+3.8 KiB
+1. Create a function to return total number of accidents happened in a particular year.
+SQL> create or replace function total_accd
+    (year in int)
+    return int
+    as
+    total int;
+    begin
+    select count(report_number)
+    into total
+    from accident
+    where extract(year from accd_date)=year;
+    return total;
+    end;
+    /
+
+Function created.
+
+SQL> select total_accd(2024) from dual;
+
+TOTAL_ACCD(2024)
+----------------
+               2
+2. Create a procedure to display total damage caused due to an accident for a particular driver on a specific year.
+create or replace procedure tot_damage
+  (driver in varchar2, year in number) is
+  damage number := 0;  
+begin
+  select sum(damage_amount) into damage
+  from participated pa
+  natural join accident ac
+  where pa."driver_id#" = driver  
+  with quotes
+    and extract(year from ac.accd_date) = year;
+
+  dbms_output.put_line('total damage: ' || nvl(damage, 0));
+exception
+  when no_data_found then
+    dbms_output.put_line('no data found for the given driver and year.');
+  when others then
+    dbms_output.put_line('an error occurred: ' || sqlerrm);
+end;
+/
+SQL> execute tot_damage('1236',2024);
+Total damage: 150
+
+PL/SQL procedure successfully completed.
+3. Create a procedure to display accident information which took place in a particular location.
+SQL> create or replace procedure accident_info(location_value in varchar) IS
+  begin
+        for accident_rec in
+       (select * from accident where location = location_value) loop
+            dbms_output.put_line('Report Number: ' || accident_rec.report_number || ', Date: ' || accident_rec.accd_date || ', Location: ' || accident_rec.location);
+       end loop;
+    end;
+    /
+SQL> execute accident_info('Delhi India');
+Report Number: 1, Date: 01-JAN-24, Location: Delhi India
+
+PL/SQL procedure successfully completed.
+4. Create a procedure to identify all drivers who have never been involved in any accidents. The procedure should return their driver-id, name, and address.
+SQL> CREATE OR REPLACE PROCEDURE GetDriversWithoutAccidents AS
+    begin
+        for rec in (
+            select p.driver_id#, p.name, p.address
+            from person p
+            left join participated pa on p.driver_id# = pa.driver_id#
+            where pa.report_number is null
+        ) loop
+            dbms_output.put_line('driver id: ' || rec.driver_id# ||
+
+                                 ', name: ' || rec.name ||
+                                 ', address: ' || rec.address);
+        end loop;
+    end;
+    /
+
+Procedure created.
+SQL> EXEC GetDriversWithoutAccidents;
+Driver ID: 1237, Name: Saarthak, Address: Manipal India
+Driver ID: 1235, Name: Rohit, Address: Banglalore India
+
+PL/SQL procedure successfully completed.
+Q5. Write a function that takes a REGNO as input and returns the total number of accidents in which the car was involved
+
+SQL> create or replace function gettotalaccidentsbyregno(p_regno in varchar2)
+    return number
+    is
+        v_total_accidents number;
+    begin
+        select count(*)
+        into v_total_accidents
+        from participated
+        where regno = p_regno;
+        return v_total_accidents;
+    exception
+        when no_data_found then
+            return 0;
+        when others then
+            raise;
+    end;
+    /
+
+Function created.
+SQL> SELECT GetTotalAccidentsByRegno('ABCD0001') AS Total_Accidents
+    FROM dual;
+
+TOTAL_ACCIDENTS
+---------------
+              1
+SQL> SELECT c.REGNO, GetTotalAccidentsByRegno(c.REGNO) AS Total_Accidents
+    FROM car c;
+
+REGNO                TOTAL_ACCIDENTS
+-------------------- ---------------
+ABCD0001                           1
+ABCD4001                           0
+DSDS0001                           1
+EFGH2001                           0
+HFSP5601                           2
+Powered by Gitea
+Version: 1.23.3 Page:
+717ms
+Template:
+1ms
+Licenses
+API
