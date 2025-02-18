@@ -1,6 +1,5 @@
-### 1. Create a function to return total number of accidents happened in a particular year.
 
-```SQL
+1. Create a function to return total number of accidents happened in a particular year.
 SQL> create or replace function total_accd
     (year in int)
     return int
@@ -22,10 +21,7 @@ SQL> select total_accd(2024) from dual;
 TOTAL_ACCD(2024)
 ----------------
                2
-```
-
-### 2. Create a procedure to display total damage caused due to an accident for a particular driver on a specific year.
-```SQL
+2. Create a procedure to display total damage caused due to an accident for a particular driver on a specific year.
 CREATE OR REPLACE PROCEDURE tot_damage
     (driver IN VARCHAR2, year IN NUMBER) IS
     damage NUMBER := 0;
@@ -44,17 +40,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
 END;
 /
-```
-```sql
 SQL> execute tot_damage('1236',2024);
 Total damage: 150
 
 PL/SQL procedure successfully completed.
-```
-
-### 3. Create a procedure to display accident information which took place in a particular location.
-
-```SQL
+3. Create a procedure to display accident information which took place in a particular location.
 SQL> CREATE OR REPLACE PROCEDURE accident_info(location_value IN VARCHAR2) IS
 BEGIN
     FOR accident_rec IN
@@ -66,17 +56,11 @@ BEGIN
 END;
 /
 
-```
-```sql
 SQL> execute accident_info('Delhi India');
 Report Number: 1, Date: 01-JAN-24, Location: Delhi India
 
 PL/SQL procedure successfully completed.
-```
-
-### 4. Create a procedure to identify all drivers who have never been involved in any accidents. The procedure should return their driver-id, name, and address.
-
-```SQL
+4. Create a procedure to identify all drivers who have never been involved in any accidents. The procedure should return their driver-id, name, and address.
 SQL> 
 CREATE OR REPLACE PROCEDURE GetDriversWithoutAccidents AS
 BEGIN
@@ -93,17 +77,13 @@ BEGIN
 END;
 /
 
-```
-```SQL
 SQL> EXEC GetDriversWithoutAccidents;
 Driver ID: 1237, Name: Saarthak, Address: Manipal India
 Driver ID: 1235, Name: Rohit, Address: Banglalore India
 
 PL/SQL procedure successfully completed.
-```
-
 Q5. Write a function that takes a REGNO as input and returns the total number of accidents in which the car was involved
-```sql
+
 SQL> 
 CREATE OR REPLACE FUNCTION gettotalaccidentsbyregno(p_regno IN VARCHAR2)
 RETURN NUMBER
@@ -122,16 +102,12 @@ EXCEPTION
 END;
 /
 
-```
-```SQL
 SQL> SELECT GetTotalAccidentsByRegno('ABCD0001') AS Total_Accidents
     FROM dual;
 
 TOTAL_ACCIDENTS
 ---------------
               1
-```
-```SQL
 SQL> SELECT c.REGNO, GetTotalAccidentsByRegno(c.REGNO) AS Total_Accidents
     FROM car c;
 
@@ -142,4 +118,10 @@ ABCD4001                           0
 DSDS0001                           1
 EFGH2001                           0
 HFSP5601                           2
-```
+Powered by Gitea
+Version: 1.23.3 Page:
+1001ms
+Template:
+1ms
+Licenses
+API
