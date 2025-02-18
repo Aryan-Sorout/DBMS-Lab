@@ -1,0 +1,41 @@
+Q1:
+
+CREATE OR REPLACE TRIGGER display_driver_info
+AFTER INSERT ON PARTICIPATED
+FOR EACH ROW
+DECLARE
+  driver_name PERSON.name%TYPE;
+  driver_address PERSON.address%TYPE;
+BEGIN
+  SELECT name, address INTO driver_name, driver_address
+  FROM PERSON
+  WHERE driverid = :NEW.driverid;
+  
+  DBMS_OUTPUT.PUT_LINE('Driver ID: ' || :NEW.driverid);
+  DBMS_OUTPUT.PUT_LINE('Driver Name: ' || driver_name);
+  DBMS_OUTPUT.PUT_LINE('Driver Address: ' || driver_address);
+  DBMS_OUTPUT.PUT_LINE('Accident Report Number: ' || :NEW.REPORTNUMBER);
+  DBMS_OUTPUT.PUT_LINE('Car Registration Number: ' || :NEW.regno);
+  DBMS_OUTPUT.PUT_LINE('Damage Amount: ' || :NEW.damage_amount);
+END;
+/
+
+Q2:
+ALTER TABLE ACCIDENT ADD total_damage INT DEFAULT 0;
+
+
+CREATE OR REPLACE TRIGGER update_total_damage
+AFTER INSERT OR DELETE ON PARTICIPATED
+FOR EACH ROW
+BEGIN
+  IF INSERTING THEN
+    UPDATE ACCIDENT
+    SET total_damage = total_damage + :NEW.damage_amount
+    WHERE REPORT_NO = :NEW.REPORT_NO;
+  ELSIF DELETING THEN
+    UPDATE ACCIDENT
+    SET total_damage = total_damage - :OLD.damage_amount
+    WHERE REPORT_NO = :OLD.REPORT_NO;
+  END IF;
+END;
+/
